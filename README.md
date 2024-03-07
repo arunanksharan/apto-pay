@@ -4,24 +4,25 @@ Aptos Pay is a decentralised payments protocol. It provides a standard set of re
 
 WIP: Native integration into Aptos wallets.
 
-Specification: Transfer Request
+## Specification: Transfer Request
+
 Aptos Pay transfer request URI encodes a request for direct transfer of Coins from a sender to recipient.
 
 ```
-    aptos:<recipient>
-         ?amount=<amount>
-         &coinAddress=<module::coin>
-         &label=<label>
-         &message=<message>
+aptos:<recipient>
+     ?amount=<amount>
+     &coinAddress=<module::coin>
+     &label=<label>
+     &message=<message>
 ```
 
 The Aptos wallet parses the URI and fills in the relevant fields to compose the transaction.
 
-## recipient
+### recipient
 
 The recipient field in the URI represents the 32-byte account address of the entity receiving the coins.
 
-## amount
+### amount
 
 The amount field encodes the value of coins being transferred.
 The value is constrained to be a non-negative integer converted into decimal number of units for the coin.
@@ -31,13 +32,13 @@ Scientific notation is not allowed.
 If the amount field is missing, the wallet needs to prompt and ask the user to enter the amount.
 If the number of decimals exceed the limit supported by the coin, the URI must be rejected as invalid.
 
-## coinAddress
+### coinAddress
 
 The coinAddress parameter is an optional query parameter.
 It encodes the module address for a custom coin.
 It is 0x1::coin::AptosCoin by default where this field is not provided.
 
-## label
+### label
 
 The label field is an optional parameter which can describe the source of the transfer request.
 It must be URL-encoded UTF-8 string.
@@ -45,7 +46,7 @@ Eg: Name of store, application, person (can act as a way to categorise different
 
 Wallet integrating the protocol should URL-decode the parameter and display the label to the user.
 
-## Message
+### message
 
 The message field is an optional parameter which can describe the transfer request in greater detail.
 It must be URL-encoded UTF-8 string.
@@ -54,7 +55,7 @@ Eg: Details of item, order details, feedback, address details (Any arbitrary com
 
 Wallet integrating the protocol should URL-decode the parameter and display the message to the user.
 
-## Examples
+### Examples
 
 **URI describing transfer request for 1 APT**
 aptos:<recipient>?amount=1&label=example&message=Thank%20You&memo=Order123
@@ -64,3 +65,20 @@ aptos:<recipient>?amount=1&coinAddress=<MoonCoin::moon_coin>&label=example&messa
 
 **URI describing a transfer request for APT without the amount - Wallet should prompt and ask the user for the amount**
 aptos:<recipient>?&label=example&message=Thank%20You&memo=Order123
+
+## Specification: Transaction Request
+
+The transaction request URL can enable a bi-directional request for any Aptos transaction.
+The parameters in the URI are used by the wallet to make an HTTP request to create the transaction.
+
+**Note:** This approach, however, may open vulnerabilities. It needs to be integrated witha signing mechanism to ensure the requests being made by the wallet are not insecure.
+
+```
+aptos:<url>
+```
+
+### url
+
+The value must be a conditionally URL-encoded absolute HTTPS URL.
+It can have query parameters but they must be url-encoded.
+It can handle GET and POST request.
