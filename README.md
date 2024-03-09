@@ -11,7 +11,10 @@ Aptos Pay transfer request URI encodes a request for direct transfer of Coins fr
 ```
 aptos:<recipient>
      ?amount=<amount>
-     &coinAddress=<module::coin>
+     &coinAddress=<address>
+     &coinModuleName=<moduleName>
+     &coinName=<coinName>
+     &coinType=<moveStructId>
      &label=<label>
      &message=<message>
 ```
@@ -80,5 +83,170 @@ aptos:<url>
 ### url
 
 The value must be a conditionally URL-encoded absolute HTTPS URL.
-It can have query parameters but they must be url-encoded.
+It must have url-encoded query parameters.
+It can have protocol parameters (as specified above) and additional parameters but care must be taken to avoid a conflict between them.
+
+The url is encoded into a QR code for scanning and processing by the wallet.
+
+The wallet must URL-decode the value. This has no effect if the value isn't URL-encoded. If the decoded value is not an absolute HTTPS URL, the wallet must reject it as malformed.
+
 It can handle GET and POST request.
+
+## GET Request
+
+The wallet integrating the protocol can make GET JSON request to the url.
+The request should not identify the wallet or the user.
+
+The wallet should make the request with an Accept-Encoding header, and the application should respond with a Content-Encoding header for HTTP compression.
+
+The wallet should display the domain of the URL as the request is being made.
+
+## GET Response
+
+The wallet must handle HTTP client error, server error, and redirect responses. The application must respond with these, or with an HTTP OK JSON response with a body of
+
+```
+{"label":"<label>", "image":"<image>"}
+```
+
+### label
+
+The label field describes the source of the transaction request.
+It must be URL-encoded UTF-8 string.
+Eg: Name of store, application, person (can act as a way to categorise different transactions by origin, category)
+
+### image
+
+The image field must be an absolute HTTP or HTTPS URL of an icon image. The file must be an SVG, PNG, or WebP image, or the wallet must reject it as malformed.
+
+#### POST Request
+
+The wallet integrating the protocol can make POST JSON request to the url with the body of
+
+```
+{"account":"<addressSenderAccount>"}
+```
+
+The account value must be the public key of an account that may sign the transaction and act as the sender.
+
+The wallet should make the request with an Accept-Encoding header, and the application should respond with a Content-Encoding header for HTTP compression.
+
+The wallet should display the domain of the URL as the request is being made. If a GET request was made, the wallet should also display the label and render the icon image from the response.
+
+POST Response
+The wallet must handle HTTP client error, server error, and redirect responses. The application must respond with these, or with an HTTP OK JSON response with a body of
+
+```
+{"transaction":"<transaction>"}
+```
+
+### transaction
+
+The transaction value must be a base64-encoded serialized transaction. The wallet must base64-decode the transaction and deserialize it.
+The serialization scheme may be changed but base64 encoding serves the purpose for bidirectional communicaiton and exchange of information.
+
+The application may respond with a partially or fully signed transaction. The wallet must validate the transaction as untrusted.
+
+The wallet must only sign the transaction with the account in the request, and must do so only if a signature for the account in the request is expected.
+
+If any signature except a signature for the account in the request is expected, the wallet must reject the transaction as malicious.
+
+The application may also include an optional message field in the response body:
+
+```
+{"message":"<message>", "transaction":"<transaction>"}
+```
+
+### message
+
+The message field describes the transaction request in greater detail.
+It must be URL-encoded UTF-8 string.
+
+Eg: Details of item, order details, feedback, address details (Any arbitrary communication or description required to faciliatate the transaction)
+
+Wallet integrating the protocol should URL-decode the parameter and display the message to the user.
+
+## Example
+
+**URL describing a transaction request**
+
+```
+aptos:https://example.com/?recipient="recipient"&amount=1&coinType="aptosCoin"
+```
+
+**URL describing a transaction request with query parameters**
+
+```
+aptos:https%3A%2F%2Fexample.com%aptos-pay%3ForderId%3D123
+```
+
+**GET Request**
+
+GET /merchantApp?orderId=12345 HTTP/1.1
+
+```
+Host: example.com
+Connection: close
+Accept: application/json
+Accept-Encoding: br, gzip, deflate
+```
+
+**GET Response**
+
+```
+HTTP/1.1 200 OK
+Connection: close
+Content-Type: application/json
+Content-Length: 62
+Content-Encoding: gzip
+
+{"label":"Dunder Mifflin Paper Company","icon":"https://example.com/icon.svg"}
+```
+
+**POST Request**
+
+POST /merchantApp?orderId=123 HTTP/1.1
+
+```
+Host: example.com
+Connection: close
+Accept: application/json
+Accept-Encoding: br, gzip, deflate
+Content-Type: application/json
+Content-Length: 57
+
+{"account":"addressSenderAccount"}
+```
+
+**POST Response**
+
+```
+HTTP/1.1 200 OK
+Connection: close
+Content-Type: application/json
+Content-Length: 298
+Content-Encoding: gzip
+
+{"message":"Thanks for the order! We will supply it asap!","transaction":"serilisedTransactionEncodedAsBase64"}
+```
+
+**To Be Removed: Need to reconstruct this piece:**
+
+1. transfer_coins internally is a EntryFunction in the Aptos Account Move module, i.e. an entry function in Move that is directly callable.
+2. The Move function is stored on the aptos_account module: 0x1::aptos_account.
+3. The transfer_coins functions uses the Coin Move module
+4. **Because the Coin module can be used by other coins, the transferCoinTransaction must explicitly specify which coin type to transfer. If not specified with coinType it defaults to 0x1::aptos_coin::AptosCoin.**
+
+```
+"0x1::coin::AptosCoin - AccountAddress::ModuleName::Struct"
+const transaction = await generateTransaction({
+    aptosConfig,
+    sender: sender.accountAddress,
+    data: {
+      function: "0x1::aptos_account::transfer_coins",
+      typeArguments: [coinStructType],
+      functionArguments: [recipient, amount],
+    },
+    options,
+  });
+```
