@@ -12,8 +12,6 @@ Aptos Pay transfer request URI encodes a request for direct transfer of Coins fr
 aptos:<recipient>
      ?amount=<amount>
      &coinAddress=<address>
-     &coinModuleName=<moduleName>
-     &coinName=<coinName>
      &coinType=<moveStructId>
      &label=<label>
      &message=<message>
@@ -39,7 +37,15 @@ If the number of decimals exceed the limit supported by the coin, the URI must b
 
 The coinAddress parameter is an optional query parameter.
 It encodes the module address for a custom coin.
-It is 0x1::coin::AptosCoin by default where this field is not provided.
+It is 0x1::coin by default where this field is not provided.
+
+### coinType
+
+The coinAddress parameter is an optional query parameter.
+It encodes the coin type for a custom coin.
+It is AptosCoin by default where this field is not provided.
+
+Together, coinAddress and coinType are used together to call the transfer function.
 
 ### label
 
@@ -228,25 +234,4 @@ Content-Length: 298
 Content-Encoding: gzip
 
 {"message":"Thanks for the order! We will supply it asap!","transaction":"serilisedTransactionEncodedAsBase64"}
-```
-
-**To Be Removed: Need to reconstruct this piece:**
-
-1. transfer_coins internally is a EntryFunction in the Aptos Account Move module, i.e. an entry function in Move that is directly callable.
-2. The Move function is stored on the aptos_account module: 0x1::aptos_account.
-3. The transfer_coins functions uses the Coin Move module
-4. **Because the Coin module can be used by other coins, the transferCoinTransaction must explicitly specify which coin type to transfer. If not specified with coinType it defaults to 0x1::aptos_coin::AptosCoin.**
-
-```
-"0x1::coin::AptosCoin - AccountAddress::ModuleName::Struct"
-const transaction = await generateTransaction({
-    aptosConfig,
-    sender: sender.accountAddress,
-    data: {
-      function: "0x1::aptos_account::transfer_coins",
-      typeArguments: [coinStructType],
-      functionArguments: [recipient, amount],
-    },
-    options,
-  });
 ```
