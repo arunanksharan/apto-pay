@@ -1,0 +1,11 @@
+{
+  "name": "apto-pay",
+  "version": "1.0.0",
+  "description": "Aptos Pay is a decentralised payments protocol. It provides a standard set of reference implementations for the developers to integrate payment flows into their products.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
