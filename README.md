@@ -83,10 +83,10 @@ The parameters in the URI are used by the wallet to make an HTTP request to crea
 **Note:** This approach, however, may open vulnerabilities. It needs to be integrated witha signing mechanism to ensure the requests being made by the wallet are not insecure.
 
 ```
-aptos:<url>
+aptos:<txUrl>
 ```
 
-### url
+### txUrl
 
 The value must be a conditionally URL-encoded absolute HTTPS URL.
 It must have url-encoded query parameters.
