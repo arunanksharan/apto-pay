@@ -1,8 +1,8 @@
-import { APTOS_PROTOCOL } from './constants';
+import { APTOS_PROTOCOL } from "./constants";
 import {
   TransferRequestURLFields,
   TransactionRequestURLFields,
-} from './interfaces';
+} from "./interfaces";
 
 /**
  * Encode Aptos Pay URL.
@@ -12,7 +12,7 @@ import {
 export function encodeUrl(
   fields: TransferRequestURLFields | TransactionRequestURLFields
 ): URL {
-  return 'txUrl' in fields
+  return "txUrl" in fields
     ? encodeTransactionRequestUrl(fields)
     : encodeTransferRequestUrl(fields);
 }
@@ -27,22 +27,19 @@ export function encodeTransferRequestUrl({
   const recipientString = recipient.toString();
   const url = new URL(APTOS_PROTOCOL + recipientString);
   if (amount) {
-    url.searchParams.append(
-      'amount',
-      amount.toFixed(amount.decimalPlaces() ?? 0)
-    );
+    url.searchParams.append("amount", amount.toString());
   }
 
   if (coinType) {
-    url.searchParams.append('coinType', coinType);
+    url.searchParams.append("coinType", coinType);
   }
 
   if (label) {
-    url.searchParams.append('label', label);
+    url.searchParams.append("label", label);
   }
 
   if (message) {
-    url.searchParams.append('message', message);
+    url.searchParams.append("message", message);
   }
 
   return url;
@@ -55,16 +52,16 @@ export function encodeTransactionRequestUrl({
 }: TransactionRequestURLFields): URL {
   // Replace trailing slashes if any
   const urlString = txUrl.search
-    ? encodeURIComponent(String(txUrl).replace(/\/\?/, '?'))
-    : String(txUrl).replace(/\/$/, '');
+    ? encodeURIComponent(String(txUrl).replace(/\/\?/, "?"))
+    : String(txUrl).replace(/\/$/, "");
   const url = new URL(APTOS_PROTOCOL + urlString);
 
   if (label) {
-    url.searchParams.append('label', label);
+    url.searchParams.append("label", label);
   }
 
   if (message) {
-    url.searchParams.append('message', message);
+    url.searchParams.append("message", message);
   }
 
   return url;

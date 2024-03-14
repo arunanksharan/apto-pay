@@ -5,7 +5,7 @@ import type {
   Message,
   Recipient,
   TXUrl,
-} from './types';
+} from "./types";
 
 /** Fields of a Aptos Pay Transfer Request URL */
 export interface TransferRequestURLFields {
