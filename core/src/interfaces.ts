@@ -21,3 +21,15 @@ export interface TransactionRequestURLFields {
   label?: Label;
   message?: Message;
 }
+
+export interface CreateTransferFields {
+  recipient: Recipient;
+  amount: Amount;
+  coinType?: CoinType;
+}
+
+export interface ValidateTransferFields {
+  recipient: Recipient;
+  amount: Amount;
+  coinType?: CoinType;
+}
