@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.10.0",
     "bignumber.js": "^9.1.2"
   }
 }

@@ -21,7 +21,10 @@ The Aptos wallet parses the URI and fills in the relevant fields to compose the 
 
 ### recipient
 
-The recipient field in the URI represents the 32-byte account address of the entity receiving the coins.
+The recipient field in the URI represents the 32-byte account address as a string (as per AIP-40) of the entity receiving the coins.
+
+In short, it means that special addresses are represented in SHORT form, meaning 0x0 through to 0xf inclusive, and every other address is represented in LONG form,
+meaning 0x + 64 hex characters.
 
 ### amount
 
