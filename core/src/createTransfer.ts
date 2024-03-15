@@ -22,13 +22,14 @@ export async function createTransferAptos(
     accountAddress: sender.accountAddress,
   });
 
-  if (!senderInfo) throw new CreateTransferError();
+  if (!senderInfo) throw new CreateTransferError("Invalid Sender Account");
 
   const recipientInfo = await aptos.getAccountInfo({
     accountAddress: recipient.accountAddress,
   });
 
-  if (!recipientInfo) throw new CreateTransferError();
+  if (!recipientInfo)
+    throw new CreateTransferError("Invalid Recipient Account");
 
   const transaction = await aptos.transaction.build.simple({
     sender: sender.accountAddress,
