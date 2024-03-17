@@ -21,17 +21,22 @@ export function encodeTransferRequestUrl({
   recipient,
   amount,
   coinType,
+  reference,
   label,
   message,
 }: TransferRequestURLFields): URL {
-  const recipientString = recipient.toString();
-  const url = new URL(APTOS_PROTOCOL + recipientString);
+  const pathname = recipient.toString();
+  const url = new URL(APTOS_PROTOCOL + pathname);
   if (amount) {
     url.searchParams.append("amount", amount.toString());
   }
 
   if (coinType) {
     url.searchParams.append("coinType", coinType);
+  }
+
+  if (reference) {
+    url.searchParams.append('reference', reference);
   }
 
   if (label) {
@@ -50,11 +55,12 @@ export function encodeTransactionRequestUrl({
   label,
   message,
 }: TransactionRequestURLFields): URL {
+  
   // Replace trailing slashes if any
-  const urlString = txUrl.search
-    ? encodeURIComponent(String(txUrl).replace(/\/\?/, "?"))
-    : String(txUrl).replace(/\/$/, "");
-  const url = new URL(APTOS_PROTOCOL + urlString);
+  const pathname = txUrl.search
+    ? encodeURIComponent(String(txUrl).replace(/\/\?/, '?'))
+    : String(txUrl).replace(/\/$/, '');
+  const url = new URL(APTOS_PROTOCOL + pathname);
 
   if (label) {
     url.searchParams.append("label", label);
