@@ -13,6 +13,7 @@ aptos:<recipient>
      ?amount=<amount>
      &coinAddress=<address>
      &coinType=<moveStructId>
+     &reference=<referenceId>
      &label=<label>
      &message=<message>
 ```
@@ -49,6 +50,12 @@ It encodes the coin type for a custom coin.
 It is AptosCoin by default where this field is not provided.
 
 Together, coinAddress and coinType are used together to call the transfer function.
+
+### reference
+
+The reference parameter is an optional query parameter which may be used to uniquely identify any specific order/payment request using an offchain identifier (eg: orderId, paymentRequestId.)
+
+It may be included by the wallet in the callback url post transaction completion to notify the merchant server of the status of payment.
 
 ### label
 

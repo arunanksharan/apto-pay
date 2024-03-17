@@ -4,6 +4,7 @@ import { AccountAddress } from '@aptos-labs/ts-sdk';
 export type Recipient = AccountAddress;
 export type Amount = BigNumber;
 export type CoinType = string;
+export type Reference = string;
 export type Label = string;
 export type Message = string;
 
