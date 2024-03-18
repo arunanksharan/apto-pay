@@ -1,6 +1,7 @@
 import type {
   Amount,
   CoinType,
+  Reference,
   Label,
   Message,
   Recipient,
@@ -13,6 +14,7 @@ export interface TransferRequestURLFields {
   recipient: Recipient;
   amount?: Amount;
   coinType?: CoinType;
+  reference?: Reference;
   label?: Label;
   message?: Message;
 }
@@ -27,6 +29,21 @@ export interface CreateTransferFields {
   recipient: Recipient;
   amount: Amount;
   coinType?: CoinType;
+}
+
+export interface TransactionRequestURL {
+  txUrl: TXUrl;
+  label: Label | undefined;
+  message: Message | undefined;
+}
+
+export interface TransferRequestURL {
+  recipient: Recipient;
+  amount: Amount | undefined;
+  coinType: CoinType | undefined;
+  reference: Reference | undefined;
+  label: Label | undefined;
+  message: Message | undefined;
 }
 
 export interface ValidateTransferFields {
