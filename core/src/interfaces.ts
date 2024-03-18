@@ -5,6 +5,7 @@ import type {
   Message,
   Recipient,
   TXUrl,
+  Address,
 } from "./types";
 
 /** Fields of a Aptos Pay Transfer Request URL */
@@ -32,4 +33,9 @@ export interface ValidateTransferFields {
   recipient: Recipient;
   amount: Amount;
   coinType?: CoinType;
+}
+
+export interface Transaction {
+  feePayerAddress: Address;
+  rawTransaction: Uint8Array;
 }
