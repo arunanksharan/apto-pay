@@ -1,11 +1,5 @@
-import {
-  Aptos,
-  Account,
-  APTOS_COIN,
-  SimpleTransaction,
-  PendingTransactionResponse,
-} from "@aptos-labs/ts-sdk";
-import { TransferRequestURLFields } from "./interfaces";
+import { Aptos, Account, APTOS_COIN } from "@aptos-labs/ts-sdk";
+import { Transaction, TransferRequestURLFields } from "./interfaces";
 import { CreateTransferError } from "./errors";
 
 /**
@@ -17,7 +11,7 @@ export async function createTransferAptos(
   sender: Account,
   aptos: Aptos,
   { recipient, amount, coinType, label, message }: TransferRequestURLFields
-): Promise<PendingTransactionResponse> {
+): Promise<Transaction> {
   const senderInfo = await aptos.getAccountInfo({
     accountAddress: sender.accountAddress,
   });
@@ -39,11 +33,10 @@ export async function createTransferAptos(
       functionArguments: [recipient.accountAddress, amount],
     },
   });
+  const txBytes = transaction.rawTransaction.bcsToBytes();
 
-  const comittedTransaction = await aptos.signAndSubmitTransaction({
-    signer: sender,
-    transaction: transaction,
-  });
-
-  return comittedTransaction;
+  return {
+    feePayerAddress: sender.accountAddress,
+    rawTransaction: txBytes,
+  };
 }
