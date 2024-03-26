@@ -7,7 +7,7 @@ import type {
   Recipient,
   TXUrl,
   Address,
-} from "./types";
+} from './types';
 
 /** Fields of a Aptos Pay Transfer Request URL */
 export interface TransferRequestURLFields {
@@ -29,6 +29,7 @@ export interface CreateTransferFields {
   recipient: Recipient;
   amount: Amount;
   coinType?: CoinType;
+  reference?: Reference;
 }
 
 export interface TransactionRequestURL {
@@ -50,6 +51,7 @@ export interface ValidateTransferFields {
   recipient: Recipient;
   amount: Amount;
   coinType?: CoinType;
+  reference?: Reference;
 }
 
 export interface Transaction {

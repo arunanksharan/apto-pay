@@ -1,6 +1,6 @@
-import { AccountAddress, Account,   } from "@aptos-labs/ts-sdk";
+import { AccountAddress, Account } from '@aptos-labs/ts-sdk';
 
-export type Recipient = Account;
+export type Recipient = AccountAddress;
 export type Amount = number | bigint;
 export type CoinType = string;
 export type Reference = string;
