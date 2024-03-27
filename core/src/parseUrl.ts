@@ -1,6 +1,7 @@
 import { HTTPS_PROTOCOL, APTOS_PROTOCOL } from './constants';
 import type {
   Amount,
+  CoinAddress,
   CoinType,
   Label,
   Message,
@@ -75,9 +76,18 @@ function parseTransferRequestURL({
     if (!/^\d+(\.\d+)?$/.test(amountParam))
       throw new ParseURLError('amount invalid');
 
-    amount = new BigNumber(amountParam);
-    if (amount.isNaN()) throw new ParseURLError('amount NaN');
-    if (amount.isNegative()) throw new ParseURLError('amount negative');
+    amount = Number(amountParam);
+    if (Number.isNaN(amount)) throw new ParseURLError('amount NaN');
+    if (amount < 0) throw new ParseURLError('amount negative');
+  }
+
+  let coinAddress: CoinAddress | undefined;
+  const coinAddressParam = searchParams.get('coinType');
+  if (coinAddressParam != null) {
+    if (!/^[a-zA-Z0-9]{1,10}$/.test(coinAddressParam))
+      throw new ParseURLError('coinAddress invalid');
+
+    coinAddress = coinAddressParam;
   }
 
   let coinType: CoinType | undefined;

@@ -1,7 +1,7 @@
 import { Account, AccountAddress } from '@aptos-labs/ts-sdk';
 import { encodeUrl } from '../src/encodeUrl';
 
-describe('encodeURL', () => {
+describe('encodeUrl', () => {
   describe('TransferRequestURL', () => {
     it('encodes a URL', () => {
       const recipient = Account.generate().accountAddress;
