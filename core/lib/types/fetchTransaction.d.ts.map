@@ -1,0 +1,1 @@
+{"version":3,"file":"fetchTransaction.d.ts","sourceRoot":"","sources":["../../src/fetchTransaction.ts"],"names":[],"mappings":"AAAA,OAAO,EACL,OAAO,EACP,iBAAiB,EAGlB,MAAM,oBAAoB,CAAC;AAG5B,wBAAsB,gBAAgB,CACpC,OAAO,EAAE,OAAO,EAChB,IAAI,EAAE,MAAM,GAAG,GAAG,GACjB,OAAO,CAAC,iBAAiB,CAAC,CAkC5B"}

@@ -7,11 +7,11 @@ import QRCodeStyling, {
   Mode,
   Options,
   TypeNumber,
-} from 'qr-code-styling';
+} from "qr-code-styling";
 
-import { TransferRequestURLFields } from './interfaces';
+import { TransferRequestURLFields } from "./interfaces";
 
-import { encodeUrl } from './encodeUrl';
+import { encodeUrl } from "./encodeUrl";
 
 /**
  * Create a QR code from a Aptos Pay URL.
@@ -33,27 +33,27 @@ export const createQR = (fields: TransferRequestURLFields): QRCodeStyling => {
 const createQROptions = (
   url: string | URL,
   size = 512,
-  background = 'white',
-  color = 'black'
+  background = "white",
+  color = "black"
 ): Options => {
   return {
-    type: 'svg' as DrawType,
+    type: "svg" as DrawType,
     width: size,
     height: size,
     data: String(url),
     margin: 16,
     qrOptions: {
       typeNumber: 0 as TypeNumber,
-      mode: 'Byte' as Mode,
-      errorCorrectionLevel: 'Q' as ErrorCorrectionLevel,
+      mode: "Byte" as Mode,
+      errorCorrectionLevel: "Q" as ErrorCorrectionLevel,
     },
     backgroundOptions: { color: background },
-    dotsOptions: { type: 'extra-rounded' as DotType, color },
+    dotsOptions: { type: "extra-rounded" as DotType, color },
     cornersSquareOptions: {
-      type: 'extra-rounded' as CornerSquareType,
+      type: "extra-rounded" as CornerSquareType,
       color,
     },
-    cornersDotOptions: { type: 'square' as CornerDotType, color },
+    cornersDotOptions: { type: "square" as CornerDotType, color },
     imageOptions: { hideBackgroundDots: true, imageSize: 0.15, margin: 8 },
   };
 };
