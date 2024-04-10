@@ -1,4 +1,4 @@
-import { createTransferAptos } from "apto-pay";
+import { createTransferAptos, recipientFromAccountAddress } from "apto-pay";
 import type { NextApiHandler } from "next";
 import { aptosClient } from "../aptos";
 import { Account } from "@aptos-labs/ts-sdk";
@@ -35,10 +35,6 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   if (!amountField) throw new Error("missing amount");
   if (typeof amountField !== "string") throw new Error("invalid amount");
 
-  const splTokenField = request.query["spl-token"];
-  if (splTokenField && typeof splTokenField !== "string")
-    throw new Error("invalid spl-token");
-
   const messageParam = request.query.message;
   if (messageParam && typeof messageParam !== "string")
     throw new Error("invalid message");
@@ -48,6 +44,11 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   const accountField = request.body?.account;
   if (!accountField) throw new Error("missing account");
   if (typeof accountField !== "string") throw new Error("invalid account");
+
+  const sampleAccount = Account.generate();
+  const address = recipientFromAccountAddress(sampleAccount.accountAddress);
+
+  // const tx = createTransferAptos(address, aptosClient, {});
 };
 
 const index: NextApiHandler<GetResponse | PostResponse> = async (

@@ -27,6 +27,8 @@ export const createQR = (fields: TransferRequestURLFields): QRCodeStyling => {
     ...fields,
   });
 
+  console.log({ url });
+
   return new QRCodeStyling(createQROptions(url));
 };
 

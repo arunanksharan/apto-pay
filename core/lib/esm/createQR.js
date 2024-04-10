@@ -12,6 +12,7 @@ export const createQR = (fields) => {
     const url = encodeUrl({
         ...fields,
     });
+    console.log({ url });
     return new QRCodeStyling(createQROptions(url));
 };
 const createQROptions = (url, size = 512, background = "white", color = "black") => {

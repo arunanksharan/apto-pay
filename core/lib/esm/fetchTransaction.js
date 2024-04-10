@@ -1,4 +1,4 @@
-import { RawTransaction, Deserializer, } from "@aptos-labs/ts-sdk";
+import { SimpleTransaction, RawTransaction, Deserializer, } from "@aptos-labs/ts-sdk";
 import { FetchTransactionError } from "./errors";
 export async function fetchTransaction(account, link) {
     const response = await fetch(String(link), {
@@ -22,10 +22,7 @@ export async function fetchTransaction(account, link) {
         throw new FetchTransactionError("Error parsing fetch transaction");
     const deserializer = new Deserializer(transaction.rawTransaction);
     const rawTransaction = RawTransaction.deserialize(deserializer);
-    const simpleTransaction = {
-        rawTransaction,
-        feePayerAddress: transaction.feePayerAddress,
-    };
+    const simpleTransaction = new SimpleTransaction(rawTransaction, transaction.feePayerAddress);
     return simpleTransaction;
 }
 //# sourceMappingURL=fetchTransaction.js.map

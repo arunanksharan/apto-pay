@@ -16,6 +16,7 @@ const encodeUrl_1 = require("./encodeUrl");
 const createQR = (fields) => {
     console.log(`Generated URL: ${fields}`);
     const url = (0, encodeUrl_1.encodeUrl)(Object.assign({}, fields));
+    console.log({ url });
     return new qr_code_styling_1.default(createQROptions(url));
 };
 exports.createQR = createQR;

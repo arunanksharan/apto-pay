@@ -35,10 +35,7 @@ function fetchTransaction(account, link) {
             throw new errors_1.FetchTransactionError("Error parsing fetch transaction");
         const deserializer = new ts_sdk_1.Deserializer(transaction.rawTransaction);
         const rawTransaction = ts_sdk_1.RawTransaction.deserialize(deserializer);
-        const simpleTransaction = {
-            rawTransaction,
-            feePayerAddress: transaction.feePayerAddress,
-        };
+        const simpleTransaction = new ts_sdk_1.SimpleTransaction(rawTransaction, transaction.feePayerAddress);
         return simpleTransaction;
     });
 }
