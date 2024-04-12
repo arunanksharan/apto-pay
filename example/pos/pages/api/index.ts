@@ -1,7 +1,7 @@
 import { createTransferAptos, recipientFromAccountAddress } from "apto-pay";
 import type { NextApiHandler } from "next";
 import { aptosClient } from "../aptos";
-import { Account } from "@aptos-labs/ts-sdk";
+import { Account, AccountAddress } from "@aptos-labs/ts-sdk";
 
 interface GetResponse {
   label: string;
@@ -35,20 +35,25 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   if (!amountField) throw new Error("missing amount");
   if (typeof amountField !== "string") throw new Error("invalid amount");
 
-  const messageParam = request.query.message;
-  if (messageParam && typeof messageParam !== "string")
-    throw new Error("invalid message");
-  const message = messageParam || undefined;
+  const coinType = request.body?.coinType;
+  if (!coinType) throw new Error("missing account");
+  if (typeof coinType !== "string") throw new Error("invalid coinType");
 
-  // Account provided in the transaction request body by the wallet.
-  const accountField = request.body?.account;
-  if (!accountField) throw new Error("missing account");
-  if (typeof accountField !== "string") throw new Error("invalid account");
+  const label = request.body?.coinType;
 
   const sampleAccount = Account.generate();
   const address = recipientFromAccountAddress(sampleAccount.accountAddress);
 
-  // const tx = createTransferAptos(address, aptosClient, {});
+  const recipient = AccountAddress.from(recipientField);
+  const amount = Number(amountField);
+  const tx = await createTransferAptos(address, aptosClient, {
+    recipient,
+    amount,
+    coinType,
+    label,
+  });
+
+  return tx;
 };
 
 const index: NextApiHandler<GetResponse | PostResponse> = async (
