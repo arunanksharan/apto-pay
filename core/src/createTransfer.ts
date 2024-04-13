@@ -1,4 +1,4 @@
-import { Aptos, Account, APTOS_COIN, AccountAddress } from "@aptos-labs/ts-sdk";
+import { Aptos, APTOS_COIN, AccountAddress } from "@aptos-labs/ts-sdk";
 import { Transaction, TransferRequestURLFields } from "./interfaces";
 import { CreateTransferError } from "./errors";
 
