@@ -1,6 +1,6 @@
-import { AccountAddress } from "@aptos-labs/ts-sdk";
-import { Recipient } from "./types";
+import { AccountAddress } from '@aptos-labs/ts-sdk';
+import { Recipient } from './types';
 
-export const recipientFromAccountAddress = (addresss: any): Recipient => {
-  return addresss;
+export const recipientFromAccountAddress = (address: any): Recipient => {
+  return address;
 };
