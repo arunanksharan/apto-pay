@@ -1,7 +1,6 @@
 import { HTTPS_PROTOCOL, APTOS_PROTOCOL } from './constants';
 import { ParseURLError } from './errors';
 import { AccountAddress } from '@aptos-labs/ts-sdk';
-import BigNumber from 'bignumber.js';
 /**
  * Parse Aptos Pay URL.
  *
@@ -48,12 +47,19 @@ function parseTransferRequestURL({ pathname, searchParams, }) {
     if (amountParam != null) {
         if (!/^\d+(\.\d+)?$/.test(amountParam))
             throw new ParseURLError('amount invalid');
-        amount = new BigNumber(amountParam);
-        if (amount.isNaN())
+        amount = Number(amountParam);
+        if (Number.isNaN(amount))
             throw new ParseURLError('amount NaN');
-        if (amount.isNegative())
+        if (amount < 0)
             throw new ParseURLError('amount negative');
     }
+    // let coinAddress: CoinAddress | undefined;
+    // const coinAddressParam = searchParams.get('coinType');
+    // if (coinAddressParam != null) {
+    //   if (!/^[a-zA-Z0-9]{1,10}$/.test(coinAddressParam))
+    //     throw new ParseURLError('coinAddress invalid');
+    //   coinAddress = coinAddressParam;
+    // }
     let coinType;
     const coinTypeParam = searchParams.get('coinType');
     if (coinTypeParam != null) {
