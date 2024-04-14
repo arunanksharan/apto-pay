@@ -37,10 +37,10 @@ export async function fetchTransaction(
   const rawTransaction: RawTransaction =
     RawTransaction.deserialize(deserializer);
 
-  const simpleTransaction: SimpleTransaction = {
+  const simpleTransaction = new SimpleTransaction(
     rawTransaction,
-    feePayerAddress: transaction.feePayerAddress,
-  };
+    transaction.feePayerAddress
+  );
 
   return simpleTransaction;
 }
