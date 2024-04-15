@@ -1,7 +1,11 @@
 import { Account, AccountAddress } from "@aptos-labs/ts-sdk";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { aptosClient } from "../aptos";
-import { createTransferAptos } from "apto-pay";
+import {
+  APTOS_DEVNET_URL,
+  createTransferAptos,
+  validateTransaction,
+} from "apto-pay";
 
 interface GetResponse {
   label: string;
@@ -51,12 +55,30 @@ const post: NextApiHandler<Response> = async (request, response) => {
   return tx;
 };
 
+const put: NextApiHandler<Response> = async (request, response) => {
+  const transactionHash = request.query.txHash;
+  if (!transactionHash) throw new Error("missing txHash");
+  if (typeof transactionHash !== "string") throw new Error("invalid txHash");
+
+  const txResponse = await validateTransaction({
+    url: APTOS_DEVNET_URL,
+    txHash: transactionHash,
+  });
+
+  if (txResponse.type == "commited") {
+    response.redirect(200, "/confirmation");
+  } else {
+    response.redirect(307, "/");
+  }
+};
+
 export default function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
   if (request.method === "GET") return get(request, response);
   if (request.method === "POST") return post(request, response);
+  if (request.method === "PUT") return put(request, response);
 
   throw new Error(`Unexpected method ${request.method}`);
 }

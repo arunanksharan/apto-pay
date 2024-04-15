@@ -7,5 +7,5 @@ import { TransferRequestURLFields } from "./interfaces";
  *
  * @returns QRCodeStyling object containin various methods to render the QR code.
  */
-export declare const createQR: (fields: TransferRequestURLFields) => QRCodeStyling | null;
+export declare const createQR: (fields: TransferRequestURLFields) => QRCodeStyling;
 //# sourceMappingURL=createQR.d.ts.map

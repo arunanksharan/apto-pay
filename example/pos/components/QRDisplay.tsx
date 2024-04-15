@@ -1,16 +1,18 @@
-import { APTOS_COIN, Account } from "@aptos-labs/ts-sdk";
+import { APTOS_COIN, AccountAddress } from "@aptos-labs/ts-sdk";
 import { TransferRequestURLFields, createQR } from "apto-pay";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-const QRDisplay = () => {
+type QRDisplayProps = {
+  amount: number;
+  receiverAddress: AccountAddress;
+};
+
+const QRDisplay = ({ amount, receiverAddress }: QRDisplayProps) => {
   const mintQrRef = useRef<HTMLDivElement | null>(null);
   const initQR = () => {
-    const sampleAccount = Account.generate();
-    const address = sampleAccount.accountAddress;
-
     const mintUrlFields: TransferRequestURLFields = {
-      recipient: address,
-      amount: 1000,
+      recipient: receiverAddress,
+      amount: amount,
       coinType: APTOS_COIN,
       label: "Sample",
     };

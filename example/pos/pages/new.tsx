@@ -1,15 +1,16 @@
 import NumberPad from "@/components/NumberPad";
 import dynamic, { LoaderComponent } from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { recipientAddress } from "./aptos";
 const QRCodeGenerator = dynamic(() => import("@/components/QRDisplay"), {
   ssr: false,
 });
 
 export default function NewOrder() {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<number | string>(0);
   const [showQR, setShowQR] = useState(false);
 
-  const handleChange = (newValue: number) => {
+  const handleChange = (newValue: number | string) => {
     setValue(newValue);
   };
 
@@ -17,7 +18,7 @@ export default function NewOrder() {
     <main>
       {!showQR && (
         <NumberPad
-          onChange={(value) => {}}
+          onChange={(v) => handleChange(v)}
           onNext={() => {
             setShowQR(true);
           }}
@@ -25,7 +26,10 @@ export default function NewOrder() {
       )}
       {showQR && (
         <div className="flex h-full justify-center px-5">
-          <QRCodeGenerator />
+          <QRCodeGenerator
+            amount={Number(value)}
+            receiverAddress={recipientAddress}
+          />
         </div>
       )}
     </main>
