@@ -20,7 +20,9 @@ import { encodeUrl } from "./encodeUrl";
  *
  * @returns QRCodeStyling object containin various methods to render the QR code.
  */
-export const createQR = (fields: TransferRequestURLFields): QRCodeStyling => {
+export const createQR = (
+  fields: TransferRequestURLFields
+): QRCodeStyling => {
   console.log(`Generated URL: ${fields}`);
 
   const url = encodeUrl({

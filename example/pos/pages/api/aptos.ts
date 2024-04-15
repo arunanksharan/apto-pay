@@ -48,7 +48,7 @@ const post: NextApiHandler<Response> = async (request, response) => {
     label,
   });
 
-  // return tx;
+  return tx;
 };
 
 export default function handler(

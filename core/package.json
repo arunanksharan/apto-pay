@@ -21,7 +21,7 @@
   "dependencies": {
     "@aptos-labs/ts-sdk": "^1.12.1",
     "bignumber.js": "^9.1.2",
-    "qr-code-styling": "^1.6.0-rc.1"
+    "qr-code-styling": "git+https://github.com/Sameerkash/qr-code-styling.git"
   },
   "devDependencies": {
     "@types/eslint": "^8.56.6",
