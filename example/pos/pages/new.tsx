@@ -9,8 +9,6 @@ export default function NewOrder() {
   const [value, setValue] = useState(0);
   const [showQR, setShowQR] = useState(false);
 
-  console.log({ QRCodeGenerator });
-
   const handleChange = (newValue: number) => {
     setValue(newValue);
   };

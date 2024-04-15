@@ -55,9 +55,8 @@ export default function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  console.log("request OBJECT", { request });
   if (request.method === "GET") return get(request, response);
-  // if (request.method === "POST") return post(request, response);
+  if (request.method === "POST") return post(request, response);
 
   throw new Error(`Unexpected method ${request.method}`);
 }
