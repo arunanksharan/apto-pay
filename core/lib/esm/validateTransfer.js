@@ -10,7 +10,7 @@ export async function validateTransaction({ url, txHash, }) {
     // CCreate Url with txHash at the end
     let aptosUrl = `${url}/${txHash}`;
     const response = await fetch(String(aptosUrl), {
-        method: 'GET',
+        method: 'PUT',
         mode: 'cors',
         cache: 'no-cache',
         headers: {
