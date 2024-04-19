@@ -4,7 +4,7 @@
   "description": "Aptos Pay is a decentralised payments protocol. It provides a standard set of reference implementations for the developers to integrate payment flows into their products.",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "tsc --build --verbose tsconfig.all.json",
     "postbuild": "shx echo '{ \"type\": \"commonjs\" }' > lib/cjs/package.json"
   },
@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aptos-labs/ts-sdk": "^1.12.1",
+    "@aptos-labs/ts-sdk": "^1.12.2",
     "bignumber.js": "^9.1.2",
     "qr-code-styling": "^1.6.0-rc.1"
   },

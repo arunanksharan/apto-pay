@@ -1,13 +1,12 @@
+// https://medium.com/@dimi_2011/tdd-unit-testing-typescript-project-with-jest-2557e8b84414
 import { Account, AccountAddress } from '@aptos-labs/ts-sdk';
 import { encodeUrl } from '../src/encodeUrl';
-import { describe, it } from 'node:test';
-import expect from 'expect';
 
 describe('encodeUrl', () => {
   describe('TransferRequestURL', () => {
     it('encodes a URL', () => {
       const recipient = Account.generate().accountAddress;
-      const amount = 1000000;
+      const amount = 100000000;
       const reference = 'test-reference-uuid';
       const label = 'label';
       const message = 'message';
@@ -21,7 +20,7 @@ describe('encodeUrl', () => {
       });
 
       expect(String(url)).toBe(
-        `aptos:${recipient}?amount=100000000&&reference=${reference}&label=${label}&message=${message}`
+        `aptos:${recipient}?amount=100000000&reference=${reference}&label=${label}&message=${message}`
       );
     });
 
@@ -50,7 +49,7 @@ describe('encodeUrl', () => {
       const url = encodeUrl({ recipient, amount, coinType });
 
       expect(String(url)).toBe(
-        `aptos:${recipient}?amount=100000000&spl-token=${coinType}`
+        `aptos:${recipient}?amount=100000000&coinType=${coinType}`
       );
     });
 
