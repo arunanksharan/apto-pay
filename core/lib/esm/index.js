@@ -8,4 +8,5 @@ export * from "./interfaces";
 export * from "./parseUrl";
 export * from "./types";
 export * from "./util";
+export * from "./validateTransfer";
 //# sourceMappingURL=index.js.map

@@ -1,13 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseURL = void 0;
 const constants_1 = require("./constants");
 const errors_1 = require("./errors");
 const ts_sdk_1 = require("@aptos-labs/ts-sdk");
-const bignumber_js_1 = __importDefault(require("bignumber.js"));
 /**
  * Parse Aptos Pay URL.
  *
@@ -55,26 +51,21 @@ function parseTransferRequestURL({ pathname, searchParams, }) {
     if (amountParam != null) {
         if (!/^\d+(\.\d+)?$/.test(amountParam))
             throw new errors_1.ParseURLError('amount invalid');
-        amount = new bignumber_js_1.default(amountParam);
-        if (amount.isNaN())
+        amount = Number(amountParam);
+        if (Number.isNaN(amount))
             throw new errors_1.ParseURLError('amount NaN');
-        if (amount.isNegative())
+        if (amount < 0)
             throw new errors_1.ParseURLError('amount negative');
     }
-    let coinType;
-    const coinTypeParam = searchParams.get('coinType');
-    if (coinTypeParam != null) {
-        if (!/^[a-zA-Z0-9]{1,10}$/.test(coinTypeParam))
-            throw new errors_1.ParseURLError('coinType invalid');
-        coinType = coinTypeParam;
-    }
-    let reference;
-    const referenceParam = searchParams.get('reference');
-    if (referenceParam != null) {
-        if (!/^[a-zA-Z0-9]{1,10}$/.test(referenceParam))
-            throw new errors_1.ParseURLError('coinType invalid');
-        reference = referenceParam;
-    }
+    // let coinAddress: CoinAddress | undefined;
+    // const coinAddressParam = searchParams.get('coinType');
+    // if (coinAddressParam != null) {
+    //   if (!/^[a-zA-Z0-9]{1,10}$/.test(coinAddressParam))
+    //     throw new ParseURLError('coinAddress invalid');
+    //   coinAddress = coinAddressParam;
+    // }
+    const coinType = searchParams.get('coinType') || undefined;
+    const reference = searchParams.get('reference') || undefined;
     const label = searchParams.get('label') || undefined;
     const message = searchParams.get('message') || undefined;
     return {

@@ -20,7 +20,7 @@ const createQR = (fields) => {
     return new qr_code_styling_1.default(createQROptions(url));
 };
 exports.createQR = createQR;
-const createQROptions = (url, size = 512, background = "white", color = "black") => {
+const createQROptions = (url, size = 400, background = "white", color = "black") => {
     return {
         type: "svg",
         width: size,

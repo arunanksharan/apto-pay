@@ -15,7 +15,7 @@ export const createQR = (fields) => {
     console.log({ url });
     return new QRCodeStyling(createQROptions(url));
 };
-const createQROptions = (url, size = 512, background = "white", color = "black") => {
+const createQROptions = (url, size = 400, background = "white", color = "black") => {
     return {
         type: "svg",
         width: size,

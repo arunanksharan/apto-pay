@@ -1,7 +1,11 @@
-import { createTransferAptos, recipientFromAccountAddress } from "apto-pay";
-import type { NextApiHandler } from "next";
-import { aptosClient } from "../aptos";
 import { Account, AccountAddress } from "@aptos-labs/ts-sdk";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { aptosClient } from "../aptos";
+import {
+  APTOS_DEVNET_URL,
+  createTransferAptos,
+  validateTransaction,
+} from "apto-pay";
 
 interface GetResponse {
   label: string;
@@ -13,7 +17,7 @@ const get: NextApiHandler<GetResponse> = async (request, response) => {
   if (!label) throw new Error("missing label");
   if (typeof label !== "string") throw new Error("invalid label");
 
-  const icon = `https://${request.headers.host}/solana-pay-logo.svg`;
+  const icon = `https://${request.headers.host}/vercel.svg`;
 
   response.status(200).send({
     label,
@@ -21,12 +25,7 @@ const get: NextApiHandler<GetResponse> = async (request, response) => {
   });
 };
 
-interface PostResponse {
-  transaction: string;
-  message?: string;
-}
-
-const post: NextApiHandler<PostResponse> = async (request, response) => {
+const post: NextApiHandler<Response> = async (request, response) => {
   const recipientField = request.query.recipient;
   if (!recipientField) throw new Error("missing recipient");
   if (typeof recipientField !== "string") throw new Error("invalid recipient");
@@ -42,7 +41,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   const label = request.body?.coinType;
 
   const sampleAccount = Account.generate();
-  const address = recipientFromAccountAddress(sampleAccount.accountAddress);
+  const address = sampleAccount.accountAddress;
 
   const recipient = AccountAddress.from(recipientField);
   const amount = Number(amountField);
@@ -56,12 +55,30 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   return tx;
 };
 
-const index: NextApiHandler<GetResponse | PostResponse> = async (
-  request,
-  response
-) => {
+const put: NextApiHandler<Response> = async (request, response) => {
+  const transactionHash = request.query.txHash;
+  if (!transactionHash) throw new Error("missing txHash");
+  if (typeof transactionHash !== "string") throw new Error("invalid txHash");
+
+  const txResponse = await validateTransaction({
+    url: APTOS_DEVNET_URL,
+    txHash: transactionHash,
+  });
+
+  if (txResponse.type == "commited") {
+    response.redirect(200, "/confirmation");
+  } else {
+    response.redirect(307, "/");
+  }
+};
+
+export default function handler(
+  request: NextApiRequest,
+  response: NextApiResponse
+) {
   if (request.method === "GET") return get(request, response);
   if (request.method === "POST") return post(request, response);
+  if (request.method === "PUT") return put(request, response);
 
   throw new Error(`Unexpected method ${request.method}`);
-};
+}

@@ -19,8 +19,8 @@ interface ValidateTransactionFields {
 
 const DEVNET = 'devnet';
 const MAINNET = 'mainnet';
-const APTOS_DEVNET_URL = `https://api.${DEVNET}.aptoslabs.com/v1/transactions/by_hash`;
-const APTOS_MAINNET_URL = `https://api.${MAINNET}.aptoslabs.com/v1/transactions/by_hash`;
+export const APTOS_DEVNET_URL = `https://api.${DEVNET}.aptoslabs.com/v1/transactions/wait_by_hash`;
+export const APTOS_MAINNET_URL = `https://api.${MAINNET}.aptoslabs.com/v1/transactions/wait_by_hash`;
 
 export async function validateTransaction({
   url,
@@ -29,7 +29,7 @@ export async function validateTransaction({
   // CCreate Url with txHash at the end
   let aptosUrl = `${url}/${txHash}`;
   const response = await fetch(String(aptosUrl), {
-    method: 'GET',
+    method: 'PUT',
     mode: 'cors',
     cache: 'no-cache',
     headers: {
