@@ -20,7 +20,6 @@ __exportStar(require("./createTransfer"), exports);
 __exportStar(require("./encodeUrl"), exports);
 __exportStar(require("./errors"), exports);
 __exportStar(require("./fetchTransaction"), exports);
-__exportStar(require("./validateTransfer"), exports);
 __exportStar(require("./interfaces"), exports);
 __exportStar(require("./parseUrl"), exports);
 __exportStar(require("./types"), exports);

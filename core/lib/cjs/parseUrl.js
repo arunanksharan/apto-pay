@@ -64,20 +64,8 @@ function parseTransferRequestURL({ pathname, searchParams, }) {
     //     throw new ParseURLError('coinAddress invalid');
     //   coinAddress = coinAddressParam;
     // }
-    let coinType;
-    const coinTypeParam = searchParams.get('coinType');
-    if (coinTypeParam != null) {
-        if (!/^[a-zA-Z0-9]{1,10}$/.test(coinTypeParam))
-            throw new errors_1.ParseURLError('coinType invalid');
-        coinType = coinTypeParam;
-    }
-    let reference;
-    const referenceParam = searchParams.get('reference');
-    if (referenceParam != null) {
-        if (!/^[a-zA-Z0-9]{1,10}$/.test(referenceParam))
-            throw new errors_1.ParseURLError('coinType invalid');
-        reference = referenceParam;
-    }
+    const coinType = searchParams.get('coinType') || undefined;
+    const reference = searchParams.get('reference') || undefined;
     const label = searchParams.get('label') || undefined;
     const message = searchParams.get('message') || undefined;
     return {
