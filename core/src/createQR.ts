@@ -36,7 +36,7 @@ export const createQR = (
 
 const createQROptions = (
   url: string | URL,
-  size = 512,
+  size = 400,
   background = "white",
   color = "black"
 ): Options => {

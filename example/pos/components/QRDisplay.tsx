@@ -1,5 +1,5 @@
 import { APTOS_COIN, AccountAddress } from "@aptos-labs/ts-sdk";
-import { TransferRequestURLFields, createQR } from "apto-pay";
+import { TransferRequestURLFields, createQR, encodeUrl } from "apto-pay";
 import { useEffect, useRef } from "react";
 
 type QRDisplayProps = {
@@ -32,9 +32,9 @@ const QRDisplay = ({ amount, receiverAddress }: QRDisplayProps) => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        <h1 className=" text-3xl">Scan QR code</h1>
-        <div>{mintQrRef && <div className="p-3" ref={mintQrRef} />}</div>
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <h1 className="text-3xl">Scan QR code to pay {amount} APT </h1>
+        <div>{mintQrRef && <div className="p-8" ref={mintQrRef} />}</div>
       </div>
     </>
   );

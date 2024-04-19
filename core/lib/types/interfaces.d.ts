@@ -1,4 +1,4 @@
-import type { Amount, CoinType, Reference, Label, Message, Recipient, TXUrl, Address } from './types';
+import type { Amount, CoinType, Reference, Label, Message, Recipient, TXUrl, Address } from "./types";
 /** Fields of a Aptos Pay Transfer Request URL */
 export interface TransferRequestURLFields {
     recipient: Recipient;

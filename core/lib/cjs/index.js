@@ -24,4 +24,5 @@ __exportStar(require("./interfaces"), exports);
 __exportStar(require("./parseUrl"), exports);
 __exportStar(require("./types"), exports);
 __exportStar(require("./util"), exports);
+__exportStar(require("./validateTransfer"), exports);
 //# sourceMappingURL=index.js.map

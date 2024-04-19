@@ -15,7 +15,7 @@ export default function NewOrder() {
   };
 
   return (
-    <main>
+    <div className="">
       {!showQR && (
         <NumberPad
           onChange={(v) => handleChange(v)}
@@ -25,13 +25,13 @@ export default function NewOrder() {
         />
       )}
       {showQR && (
-        <div className="flex h-full justify-center px-5">
+        <div className="">
           <QRCodeGenerator
             amount={Number(value)}
             receiverAddress={recipientAddress}
           />
         </div>
       )}
-    </main>
+    </div>
   );
 }
